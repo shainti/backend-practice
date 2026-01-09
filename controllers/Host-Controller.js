@@ -4,7 +4,7 @@ const Home = require('../models/home');
 exports.Addhomes =
   ("/Addstudent",
   (req, res) => {
-    res.render("Host/Addstudent");
+    res.render("Host/Addstudent",{islogedIn: req.islogedIn});
   });
 
   
@@ -23,7 +23,7 @@ exports.Hostviewdetails =
   ("/Hostview",
   (req, res) => {
     Home.find().then(studentdetails => {  //find for use find the student details 
-      res.render("Host/Hostview", { studentdetails });
+      res.render("Host/Hostview", { studentdetails, islogedIn: req.islogedIn });
     });
   });
 
@@ -33,7 +33,7 @@ exports.Hosteditview =
     const studentid = req.params.studentid;
     Home.findById(studentid) //findbyid for find any particular student by there id 
       .then((Onestudent) => {
-        res.render("Host/EditDetail", { studentid, Onestudent });
+        res.render("Host/EditDetail", { studentid, Onestudent,islogedIn: req.islogedIn });
       })
       .catch((err) => {
         console.log(err);

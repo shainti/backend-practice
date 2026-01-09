@@ -5,7 +5,7 @@ exports.viewstudentdetails =
   ("/Viewstudent",
   (req, res) => {
     Home.find().then((studentdetails) => {
-      res.render("Student/ViewStudent", { studentdetails });
+      res.render("Student/ViewStudent", { studentdetails, islogedIn: req.islogedIn });
     });
   });
 
@@ -20,7 +20,7 @@ exports.viewParticular =
         res.redirect("/ViewStudent");
       } else {
         console.log(Onestudent);
-        res.render("Student/detail-Student", { Onestudent });
+        res.render("Student/detail-Student", { Onestudent, islogedIn: req.islogedIn });
       }
     });
   });

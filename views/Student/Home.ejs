@@ -59,15 +59,31 @@
 </head>
 
 <body>
-
   <nav>
     <div class="logo">Student Cheque</div>
     <ul>
       <li><a href="/">Home</a></li>
+      <% if (islogedIn) { %>
       <li><a href="/Addstudent">Add Student</a></li>
       <li><a href="/Viewstudent">View Students</a></li>
       <li><a href="/Hostview">HostView</a></li>
-      <li><a href="/Login">Login</a></li>
+      <% } %>
+      <% if (!islogedIn) { %>
+        <li><a href="/Login">Login</a></li>
+      <% } else { %>
+        <form action="/logout" method="POST">
+  <button type="submit" style="
+    padding: 10px 20px;
+    background-color: #3cc5e7;
+    color: rgb(85, 85, 85);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  ">
+    Logout
+  </button>
+</form>
+      <% }%>
     </ul>
   </nav>
   <h1 class="student"> Welcome Students </h1>
