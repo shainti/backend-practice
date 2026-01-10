@@ -1,5 +1,6 @@
 const { name } = require("ejs");
 const { check, validationResult } = require("express-validator");
+const user = require("../models/user");
 
 exports.Viewlogin =
   ("/Login",
@@ -8,7 +9,6 @@ exports.Viewlogin =
   });
 
   exports.CheckLogin = ('/authlogin',(req, res, next) =>{
-    // res.cookie("islogedIn", true);
     req.session.islogedIn = true;
     console.log("succefully login")
     res.redirect("/");
@@ -44,7 +44,7 @@ exports.Viewlogin =
       .matches(/[a-z]/)
       .withMessage("Please use alphabets with password")
       .matches(/[0-9]/)
-      .withMessage("Please use at least one number in password"),
+      .withMessage("Please use atleast one number in password"),
 
       check("confirmpassword")
       .trim()
@@ -72,6 +72,17 @@ exports.Viewlogin =
         oldInput: {Name, email, password, confirmPassword}
       });
     }
+    const userr = new user({Name, email, password});
+    userr.save().then(()=>{
+      res.redirect('/')
+    }).catch(err =>{
+      // res.status(422).render('partials/signup',{
+      //   islogedIn: false,
+      //   error: [err.message],
+      //   oldInput: {Name, email, password, confirmPassword}
+      // });
+       console.log("error",err)
+    })
     res.redirect('/')
     })]
 
