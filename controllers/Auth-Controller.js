@@ -1,4 +1,3 @@
-const { name } = require("ejs");
 const { check, validationResult } = require("express-validator");
 const user = require("../models/user");
 const bcrypt = require('bcryptjs'); //use for hash the pass 
@@ -6,14 +5,35 @@ const bcrypt = require('bcryptjs'); //use for hash the pass
 exports.Viewlogin =
   ("/Login",
   (req, res, next) => {
-    res.render("Partials/LoginFile",{islogedIn: false});
+    res.render("Partials/LoginFile",{
+    islogedIn: false,
+    error: [],
+    oldInput:{email:""}
+  });
   });
 
-  exports.CheckLogin = ('/authlogin',(req, res, next) =>{
+  exports.CheckLogin = async (req, res, next) =>{  //chack email vaildation 
+    const {email, password} = req.body;
+    const userr = await user.findOne({email});  // it return promise from db then we use it thats why me make it asycn function
+    if(!userr){
+      return res.status(422).render('partials/LoginFile',{
+        islogedIn: false, 
+        error: ["invaild email"],
+        oldInput: ({email, password}),
+      });
+    }
+    const ismatch = await bcrypt.compare(password, userr.password) //use bcrypt compare function for now password
+    if(!ismatch){                      //and compare password with db pass and that pass that user enter
+      return res.status(422).render('partials/LoginFile',{
+        islogedIn: false, 
+        error: ["invaild password"],
+        oldInput: ({email, password}),
+      });
+    }
     req.session.islogedIn = true;
-    console.log("succefully login")
+    req.session.user = user
     res.redirect("/");
-  })
+  }
 
   exports.Checklogout=('/logout',(req, res, next)=>{
     req.session.destroy(()=>{
