@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Sign Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -15,7 +15,7 @@
       height: 100vh;
     }
 
-    .login-container {
+    .signup-container {
       background: #fff;
       padding: 25px;
       width: 330px;
@@ -23,15 +23,17 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    h2 {
+    .signup-container h2 {
       text-align: center;
       margin-bottom: 20px;
+      color: #333;
     }
 
     label {
+      font-size: 14px;
+      color: #555;
       display: block;
       margin-bottom: 6px;
-      font-size: 14px;
     }
 
     input[type="text"],
@@ -39,9 +41,10 @@
     input[type="password"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
       border-radius: 5px;
+      font-size: 14px;
     }
 
     .role-box {
@@ -54,6 +57,7 @@
       display: flex;
       align-items: center;
       font-size: 14px;
+      cursor: pointer;
     }
 
     .role-box input {
@@ -65,7 +69,8 @@
       padding: 10px;
       background-color: #4a90e2;
       border: none;
-      color: #fff;
+      color: white;
+      font-size: 15px;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -73,28 +78,53 @@
     button:hover {
       background-color: #357bd8;
     }
+
+    p {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+    }
+
+    a {
+      color: #4a90e2;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <h2>Login</h2>
+  <div class="signup-container">
+     <div>
+        <% if(error.length > 0) { %>
+            <div>
+                <ul>
+                    <% error.forEach(error => { %>
+                        <li><%= error %></li>
+                   <% }) %>
+                </ul>
+            </div>
+        <% } %>
+    </div>
+    <h2>Create Account</h2>
 
-    <form action="authlogin" method="post">
-      <label>Name</label>
-      <input type="text" name="Name" required>
+    <form action="/signup" method="post">
+      <label>Full Name</label>
+      <input type="text" name="Name" value="<%= oldInput.Name ? oldInput.Name : '' %>" required>
 
       <label>Email</label>
-      <input type="email" name="email" required>
+      <input type="email" name="email" value="<%= oldInput.email ? oldInput.email : '' %>" required>
 
       <label>Password</label>
       <input type="password" name="password" required>
 
       <label>Confirm Password</label>
       <input type="password" name="confirmpassword" required>
-      <button type="submit">Submit</button>
+      <button type="submit">Sign Up</button>
     </form>
-  </div>
 
+    <p>Already have an account?
+      <a href="/login">Login</a>
+    </p>
+  </div>
 </body>
 </html>
