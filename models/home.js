@@ -7,6 +7,14 @@ const HomeSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model("Home", HomeSchema);
+
+
+
+
+
+
+
+
 //   save() {
 //   }
 //   static find(callback) {

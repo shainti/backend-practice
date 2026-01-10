@@ -94,11 +94,11 @@
 <body>
 
   <div class="signup-container">
-     <div>
+     <div> //for print the erros on screen
         <% if(error.length > 0) { %>
             <div>
                 <ul>
-                    <% error.forEach(error => { %>
+                    <% error.forEach(error => { %>   
                         <li><%= error %></li>
                    <% }) %>
                 </ul>

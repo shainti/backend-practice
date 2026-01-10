@@ -1,6 +1,7 @@
 const { name } = require("ejs");
 const { check, validationResult } = require("express-validator");
 const user = require("../models/user");
+const bcrypt = require('bcryptjs'); //use for hash the pass 
 
 exports.Viewlogin =
   ("/Login",
@@ -23,13 +24,13 @@ exports.Viewlogin =
   exports.Getsignup=('/signup',(req, res, next)=>{
     res.render('Partials/signup',{
     islogedIn: false,
-    error: [],
-    oldInput: {Name: "", email: "", password: "", confirmPassword: ""}
+    error: [],  //  pass the value that when it load page it do not show undefiened
+    oldInput: {Name: "", email: "", password: "", confirmPassword: ""} // send all the value to html page
   });
     })
 
     exports.Postsignup=[
-      check("Name")
+      check("Name")  // this all the vailidators for cheack at server side is data is correct or not 
       .trim()
       .isLength({min: 3})
       .withMessage("Name character should be 3 chracters"),
@@ -48,41 +49,50 @@ exports.Viewlogin =
 
       check("confirmpassword")
       .trim()
-      .custom((value, {req}) =>{
+      .custom((value, {req}) =>{ // it chack that out password value of we inter in cpass value are equal
         if(value !== req.body.password){
           throw new Error("password do not match")
         }
         return true;
       }),
 
-      // check('role')
-      // .isEmpty()
-      // .withMessage("please select one from each ")
-      // .isIn(['guest', 'host'])
-      // .withMessage("please select vaild option"),
-
-    ('/signup',(req, res, next)=>{
-     const { Name, email, password, confirmPassword} = req.body;
-    const error = validationResult(req);
-    if(!error.isEmpty()){
+      
+      ('/signup',(req, res, next)=>{
+        const { Name, email, password, confirmPassword} = req.body;
+        const error = validationResult(req);  //use validator and take all values
+        if(!error.isEmpty()){ // if the error occour then it show on screen
       console.log(error);
       return res.status(422).render('partials/signup',{
-        islogedIn: false,
-        error: error.array().map(err => err.msg),
-        oldInput: {Name, email, password, confirmPassword}
+        islogedIn: false,  //tell that the we are on signup page
+        error: error.array().map(err => err.msg), //pass err for show this error to the html file
+        oldInput: {Name, email, password, confirmPassword} // use for set value to old
       });
     }
-    const userr = new user({Name, email, password});
-    userr.save().then(()=>{
-      res.redirect('/')
-    }).catch(err =>{
-      // res.status(422).render('partials/signup',{
-      //   islogedIn: false,
-      //   error: [err.message],
-      //   oldInput: {Name, email, password, confirmPassword}
-      // });
-       console.log("error",err)
+
+    bcrypt.hash(password, 12).then(hashpassword => { //if the error are not occour then it  will execute this
+      const userr = new user({Name, email, password: hashpassword}); //set password as hashpass
+      return userr.save(); //save the data in db
+    }).then(()=>{  //.then are use for promise 
+      res.redirect('/');   // this is hashed password i save
+    }).catch(err => { //if any error occur
+      console.log("error",err)
     })
     res.redirect('/')
-    })]
-
+  })]
+  
+  // const userr = new user({Name, email, password}); //way of normal type of passwrod save
+  // userr.save().then(()=>{
+  //   res.redirect('/')
+  // }).catch(err =>{
+    // res.status(422).render('partials/signup',{
+    //   islogedIn: false,
+    //   error: [err.message],
+    //   oldInput: {Name, email, password, confirmPassword}      // this is normal pass i save 
+    // });
+  // })
+  
+  // check('role')    //for cheack the guest and host validations
+  // .isEmpty()
+  // .withMessage("please select one from each ")
+  // .isIn(['guest', 'host'])
+  // .withMessage("please select vaild option"),

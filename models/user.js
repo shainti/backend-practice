@@ -16,4 +16,4 @@ const Userschema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("User", Userschema);
+module.exports = mongoose.model("User", Userschema);  //for save the data in database

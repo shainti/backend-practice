@@ -8,7 +8,6 @@ const DB_Path =
 const {router: Addstudent} = require('./routes/Host-Router');
 const Viewstudent = require('./routes/Student-Router');
 const StudentLogin = require('./routes/Auth-Router');
-const e = require('express');
 
 app.set('view engine', 'ejs'); 
 app.set('views', 'views');
