@@ -12,10 +12,10 @@ exports.studentlist =
   ("/submitdetails",
   (req, res) => {
     const { FullName, Email, Password, photo } = req.body;
-    const home = new Home({FullName, Email, Password,photo}); //call class save funtion to pusn all data in class
+    const home = new Home({FullName, Email, Password, photo}); //call class save funtion to pusn all data in class
+    console.log(req.file);
     home.save().then(() => {
-      console.log("Student Details saved successfully");
-      console.log( { FullName, Email, Password, photo })
+      // console.log( { FullName, Email, Password, photo })
     });
     res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
   });

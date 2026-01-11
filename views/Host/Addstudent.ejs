@@ -129,7 +129,7 @@
     <div class="form-box">
       <h2>Student Details</h2>
 
-      <form action="/submitdetails" method="post">
+      <form action="/submitdetails" method="post" enctype="multipart/form-data">
         <div class="form-group">
           <label>Full Name</label>
           <input type="text" name="FullName" placeholder="Enter your name" required>
@@ -144,7 +144,7 @@
           <label>Password</label>
           <input type="password" name="Password" placeholder="Create password" required>
         </div>
-        <input type="file" name="photo">
+        <input type="file" name="photo" accept="image/jpg, image/png, image/jpeg">
 
         <button type="submit" class="btn">Add Student</button>
       </form>
