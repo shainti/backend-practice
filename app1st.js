@@ -26,29 +26,38 @@ const store = new Mongodbstore({
 //for get all request data from form that we enter
 app.use(express.urlencoded());
 
-//find the random string for photo image path 
+//find the random string for photo image path
 const randomString = (length) => {
-    const chracters = "abcdefghijklmnopqrstuvwxyz";
-    let result = "";
-    for (let i = 0; i < length; i++) {
-        result += chracters.charAt(Math.floor(Math.random() * chracters.length));
-    }
-    console.log(result) 
-    return result;  
+  const chracters = "abcdefghijklmnopqrstuvwxyz";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chracters.charAt(Math.floor(Math.random() * chracters.length));
+  }
+  console.log(result);
+  return result;
 };
-//use storage for add file    
+//use storage for add file
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, randomString(10)+'-'+file.originalname);
-    }
-})
-
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, randomString(10) + "-" + file.originalname);
+  },
+});
+//add file vailidation for backend
+const fileFilter = (req, file, cb) => {
+  if (["image/png" || "image/jpeg" || "image/jpg"].includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+  console.log(fileFilter)
+};
 //add multer for add photo
 const multeroption = {
-  storage
+  storage,
+  fileFilter,
 };
 app.use(multer(multeroption).single("photo"));
 

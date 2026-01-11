@@ -14,8 +14,12 @@ exports.studentlist =
     const { FullName, Email, Password, photo } = req.body;
     const home = new Home({FullName, Email, Password, photo}); //call class save funtion to pusn all data in class
     console.log(req.file);
+    
+// add file vailidation if user not add the file
+    if(!req.file){
+      return res.status(422).send("no file added");
+    }
     home.save().then(() => {
-      // console.log( { FullName, Email, Password, photo })
     });
     res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
   });
