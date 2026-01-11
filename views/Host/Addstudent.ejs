@@ -124,22 +124,10 @@
 </head>
 
 <body>
-
-  <!-- Navbar -->
-  <nav>
-    <div class="logo">Student Cheque</div>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/Addstudent">Add Student</a></li>
-      <li><a href="/Viewstudent">View Students</a></li>
-      <li><a href="/Login">Login</a></li>
-    </ul>
-  </nav>
-
   <!-- Add Student / Signup Form -->
   <div class="container">
     <div class="form-box">
-      <h2>Student Sign Up</h2>
+      <h2>Student Details</h2>
 
       <form action="/submitdetails" method="post">
         <div class="form-group">
@@ -156,12 +144,10 @@
           <label>Password</label>
           <input type="password" name="Password" placeholder="Create password" required>
         </div>
+        <input type="file" name="photo">
 
-        <button type="submit" class="btn">Sign Up</button>
+        <button type="submit" class="btn">Add Student</button>
       </form>
-
-      <div class="form-footer">
-        Already registered? <a href="#">Login</a>
       </div>
     </div>
   </div>

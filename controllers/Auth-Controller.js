@@ -31,7 +31,8 @@ exports.Viewlogin =
       });
     }
     req.session.islogedIn = true;
-    req.session.user = user
+    req.session.user = user;
+    await req.session.save();
     res.redirect("/");
   }
 
