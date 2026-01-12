@@ -53,10 +53,9 @@ exports.Updatestudent = (req, res, next) => {
     home.FullName = FullName,
     home.Email = Email,
     home.Password = Password
-    console.log(req.file.path)
     //if the req.file are exist then it assign path of the photo to home.photo
-  if(photo){
-    home.photo = req.file
+  if(req.file){
+    home.photo = req.file.path
   }
    home.save().then(result =>{
     console.log("home Update successfully",result);
