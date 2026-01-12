@@ -24,3 +24,16 @@ exports.viewParticular =
       }
     });
   });
+
+
+exports.getstudentrule = (req, res) => {
+  if (!req.session.islogedIn) {
+    return res.redirect("/Login");
+  }
+  const studentid = req.params.studentid; // optional, but now correct
+  const rulesfile = "rules.jpeg";
+  const filepath = path.join(__dirname, "../../StudentRules", rulesfile);
+
+  res.download(filepath, "rules.jpeg");
+};
+
