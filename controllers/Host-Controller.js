@@ -11,14 +11,14 @@ exports.Addhomes =
 exports.studentlist =
   ("/submitdetails",
   (req, res) => {
-    const { FullName, Email, Password, photo } = req.body;
-    const home = new Home({FullName, Email, Password, photo}); //call class save funtion to pusn all data in class
-    console.log(req.file);
-    
-// add file vailidation if user not add the file
+    const { FullName, Email, Password} = req.body;
+    const photo = req.file.path;
+    // add file vailidation if user not add the file
+    console.log(req.file.path);
     if(!req.file){
       return res.status(422).send("no file added");
     }
+    const home = new Home({FullName, Email, Password, photo}); //call class save funtion to pusn all data in class
     home.save().then(() => {
     });
     res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
@@ -48,12 +48,17 @@ exports.Hosteditview =
 
 
 exports.Updatestudent = (req, res, next) => {
-  const {FullName, Email, Password, id } = req.body;//call class save funtion to pusn all data in class
- Home.findById(id).then((home)=>{
-  home.FullName = FullName,
-  home.Email = Email,
-  home.Password = Password
-  home.save().then(result =>{
+  const {FullName, Email, Password, id} = req.body;  //call class save funtion to pusn all data in class
+  Home.findById(id).then((home)=>{
+    home.FullName = FullName,
+    home.Email = Email,
+    home.Password = Password
+    console.log(req.file.path)
+    //if the req.file are exist then it assign path of the photo to home.photo
+  if(photo){
+    home.photo = req.file
+  }
+   home.save().then(result =>{
     console.log("home Update successfully",result);
   }).catch(err =>{
    console.log("Error while update the studen",err);

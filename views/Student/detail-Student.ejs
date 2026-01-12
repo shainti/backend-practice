@@ -1,29 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Details</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #4e54c8;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .info {
+      width: 65%;
+    }
+
+    .detail {
+      margin-bottom: 12px;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .detail span {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .photo img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>here are the details of your student</h1>
-    <div class="card">
-      <h2>Student Details</h2>
 
-      <div class="detail">
-        <span>Full Name:</span> <%= Onestudent.FullName %>
+  <h1>Here are the details of your student</h1>
+
+  <div class="card">
+    <h2>Student </h2>
+
+    <div class="row">
+      <div class="info">
+        <div class="detail">
+          <span>Full Name:</span> <%= Onestudent.FullName %>
+        </div>
+
+        <div class="detail">
+          <span>Email:</span> <%= Onestudent.Email %>
+        </div>
+
+        <div class="detail">
+          <span>Password:</span> <%= Onestudent.Password %>
+        </div>
       </div>
 
-      <div class="detail">
-        <span>Email:</span> <%= Onestudent.Email %>
-      </div>
-
-      <div class="detail">
-        <span>Password:</span> <%= Onestudent.Password %>
-      </div>
-       <div class="detail">
-        <img src="<%= Onestudent.photo %>" alt="">
+      <div class="photo">
+        <img src="/<%= Onestudent.photo %>" alt="student photo">
       </div>
     </div>
+  </div>
+
 </body>
 </html>

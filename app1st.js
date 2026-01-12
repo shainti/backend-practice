@@ -2,6 +2,7 @@
 const { app } = require("./server");
 const express = require("express");
 const session = require("express-session");
+const path = require('path');
 const Mongodbstore = require("connect-mongodb-session")(session);
 const multer = require("multer");
 
@@ -25,6 +26,7 @@ const store = new Mongodbstore({
 });
 //for get all request data from form that we enter
 app.use(express.urlencoded());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //find the random string for photo image path
 const randomString = (length) => {
@@ -33,7 +35,6 @@ const randomString = (length) => {
   for (let i = 0; i < length; i++) {
     result += chracters.charAt(Math.floor(Math.random() * chracters.length));
   }
-  console.log(result);
   return result;
 };
 //use storage for add file
@@ -47,12 +48,11 @@ const storage = multer.diskStorage({
 });
 //add file vailidation for backend
 const fileFilter = (req, file, cb) => {
-  if (["image/png" || "image/jpeg" || "image/jpg"].includes(file.mimetype)) {
+  if (file.mimetype === "image/png" || file.mimetype === "image/jpeg" ||file.mimetype === "image/jpg") {
     cb(null, true);
   } else {
     cb(null, false);
   }
-  console.log(fileFilter)
 };
 //add multer for add photo
 const multeroption = {
