@@ -1,34 +1,33 @@
 const path = require("path");
-const Home = require('../models/home');
-const fs = require('fs');
+const Home = require("../models/home");
+const fs = require("fs");
 
 exports.Addhomes =
   ("/Addstudent",
   (req, res) => {
-    res.render("Host/Addstudent",{islogedIn: req.islogedIn});
+    res.render("Host/Addstudent", { islogedIn: req.islogedIn });
   });
 
-  
 exports.studentlist =
   ("/submitdetails",
   (req, res) => {
-    const { FullName, Email, Password} = req.body;
+    const { FullName, Email, Password } = req.body;
     const photo = req.file.path;
     // add file vailidation if user not add the file
     console.log(req.file.path);
-    if(!req.file){
+    if (!req.file) {
       return res.status(422).send("no file added");
     }
-    const home = new Home({FullName, Email, Password, photo}); //call class save funtion to pusn all data in class
-    home.save().then(() => {
-    });
+    const home = new Home({ FullName, Email, Password, photo }); //call class save funtion to pusn all data in class
+    home.save().then(() => {});
     res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
   });
 
 exports.Hostviewdetails =
   ("/Hostview",
   (req, res) => {
-    Home.find().then(studentdetails => {  //find for use find the student details 
+    Home.find().then((studentdetails) => {
+      //find for use find the student details
       res.render("Host/Hostview", { studentdetails, islogedIn: req.islogedIn });
     });
   });
@@ -37,9 +36,13 @@ exports.Hosteditview =
   ("/HostviewStudent/:studentid",
   (req, res) => {
     const studentid = req.params.studentid;
-    Home.findById(studentid) //findbyid for find any particular student by there id 
+    Home.findById(studentid) //findbyid for find any particular student by there id
       .then((Onestudent) => {
-        res.render("Host/EditDetail", { studentid, Onestudent,islogedIn: req.islogedIn });
+        res.render("Host/EditDetail", {
+          studentid,
+          Onestudent,
+          islogedIn: req.islogedIn,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -47,40 +50,65 @@ exports.Hosteditview =
       });
   });
 
-
 exports.Updatestudent = (req, res, next) => {
-  const {FullName, Email, Password, id} = req.body;  //call class save funtion to pusn all data in class
-  Home.findById(id).then((home)=>{
-    home.FullName = FullName,
-    home.Email = Email,
-    home.Password = Password
+  const { FullName, Email, Password, id } = req.body; //call class save funtion to pusn all data in class
+  Home.findById(id).then((home) => {
+    (home.FullName = FullName),
+      (home.Email = Email),
+      (home.Password = Password);
     //if the req.file are exist then it assign path of the photo to home.photo
-  if(req.file){
-    fs.unlink(home.photo ,(err) =>{ //for delete previous image if client edit the image 
-      if(err){
-        console.log("do not delete previous image")
-      }
-    })
-    home.photo = req.file.path
-  }
-   home.save().then(result =>{
-    console.log("home Update successfully",result);
-  }).catch(err =>{
-   console.log("Error while update the studen",err);
-  })
-   res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
+    if (req.file) {
+      fs.unlink(home.photo, (err) => {
+        //for delete previous image if client edit the image
+        if (err) {
+          console.log("do not delete previous image");
+        }
+      });
+      home.photo = req.file.path;
+    }
+    home
+      .save()
+      .then((result) => {
+        console.log("home Update successfully", result);
+      })
+      .catch((err) => {
+        console.log("Error while update the studen", err);
+      });
+    res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
   });
- };
+};
 
-exports.Deletestudent =
-  ("/Deletestudent",
-  (req, res) => {
-    const studentid = req.params.studentid;
-    console.log("delete student", studentid);
-    Home.findByIdAndDelete(studentid).then((error)=> { //use findbyidanddelte fucntion for delete the specific record
-      if (error) {
-        console.log("student not found", error);
+exports.Deletestudent = (req, res) => {
+  const studentid = req.params.studentid;
+
+  Home.findById(studentid)
+    .then((student) => {
+      if (!student) {
+        console.log("Student not found");
+        return res.redirect("/error");
       }
-      res.sendFile(path.join(__dirname, "../views/Host", "success.html"));
+
+      // delete photo from uploads folder
+      if (student.photo) {
+        fs.unlink(student.photo, (err) => {
+          if (err) {
+            console.log("Image not deleted:", err);
+          } else {
+            console.log("Image deleted successfully");
+          }
+        });
+      }
+
+      // delete student record
+      return Home.findByIdAndDelete(studentid);
+    })
+    .then(() => {
+      console.log("Student deleted successfully");
+      res.sendFile(
+        path.join(__dirname, "../views/Host", "success.html")
+      );
+    })
+    .catch((err) => {
+      console.log("Error deleting student:", err);
     });
-  });
+};
