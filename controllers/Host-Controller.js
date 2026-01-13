@@ -1,5 +1,6 @@
 const path = require("path");
 const Home = require('../models/home');
+const fs = require('fs');
 
 exports.Addhomes =
   ("/Addstudent",
@@ -55,6 +56,11 @@ exports.Updatestudent = (req, res, next) => {
     home.Password = Password
     //if the req.file are exist then it assign path of the photo to home.photo
   if(req.file){
+    fs.unlink(home.photo ,(err) =>{
+      if(err){
+        console.log("do not delete previous image")
+      }
+    })
     home.photo = req.file.path
   }
    home.save().then(result =>{
