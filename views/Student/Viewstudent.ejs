@@ -2,99 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>View Student</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Students</title>
 
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f4f6f8;
+    }
+
+    .container {
       padding: 40px;
     }
 
     .card {
-      max-width: 380px;
-      margin: auto;
+      max-width: 900px;
+      margin: 20px auto;
       background: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 26px;
+      border-radius: 12px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.12);
     }
 
     .card h2 {
-      text-align: center;
       margin-bottom: 20px;
       color: #4e54c8;
+      border-bottom: 1px solid #e6e6e6;
+      padding-bottom: 10px;
+      text-align: center;
     }
 
     .row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      gap: 40px;
     }
 
     .info {
-      width: 65%;
+      flex: 1;
     }
 
     .detail {
-      margin-bottom: 12px;
-      font-size: 15px;
+      margin-bottom: 16px;
+      font-size: 16px;
       color: #333;
     }
 
     .detail span {
       font-weight: bold;
+      display: inline-block;
+      width: 120px;
       color: #000;
     }
 
     .photo img {
-      width: 100px;
-      height: 100px;
+      width: 160px;
+      height: 160px;
       object-fit: cover;
-      border-radius: 6px;
+      border-radius: 10px;
       border: 1px solid #ddd;
+      background-color: #fafafa;
     }
 
     .btn {
+      margin-top: 24px;
       display: inline-block;
-      margin-top: 12px;
-      color: #4e54c8;
-      padding: 8px;
+      background-color: #4e54c8;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: 6px;
       text-decoration: none;
+      font-size: 15px;
+    }
+
+    .btn:hover {
+      background-color: #3d42a3;
+    }
+
+    @media (max-width: 768px) {
+      .row {
+        flex-direction: column-reverse;
+        text-align: center;
+      }
+
+      .detail span {
+        width: auto;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <% studentdetails.forEach(s => { %>
-    <div class="card">
-      <h2>Student Details</h2>
+  <%- include('../partials/nav') %>
 
-      <div class="row">
-        <div class="info">
-          <div class="detail">
-            <span>Full Name:</span> <%= s.FullName %>
+  <div class="container">
+    <% studentdetails.forEach(s => { %>
+      <div class="card">
+        <h2>Student Details</h2>
+
+        <div class="row">
+          <div class="info">
+            <div class="detail">
+              <span>Full Name:</span> <%= s.FullName %>
+            </div>
+
+            <div class="detail">
+              <span>Email:</span> <%= s.Email %>
+            </div>
+
+            <div class="detail">
+              <span>Password:</span> <%= s.Password %>
+            </div>
           </div>
 
-          <div class="detail">
-            <span>Email:</span> <%= s.Email %>
-          </div>
-
-          <div class="detail">
-            <span>Password:</span> <%= s.Password %>
+          <div class="photo">
+            <img src="/<%= s.photo %>" alt="student photo">
           </div>
         </div>
 
-        <div class="photo">
-          <img src="/<%= s.photo %>" alt="student photo">
-        </div>
+        <a href="/Viewstudent/<%= s._id %>" class="btn">View Details</a>
       </div>
-
-      <a href="/Viewstudent/<%= s._id %>" class="btn">View Details</a>
-    </div>
-  <% }) %>
+    <% }) %>
+  </div>
 
 </body>
 </html>

@@ -56,7 +56,7 @@ exports.Updatestudent = (req, res, next) => {
     home.Password = Password
     //if the req.file are exist then it assign path of the photo to home.photo
   if(req.file){
-    fs.unlink(home.photo ,(err) =>{
+    fs.unlink(home.photo ,(err) =>{ //for delete previous image if client edit the image 
       if(err){
         console.log("do not delete previous image")
       }

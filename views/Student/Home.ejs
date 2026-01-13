@@ -17,12 +17,18 @@
       background-color: #f4f6f8;
     }
 
+    /* Navbar */
     nav {
       background: linear-gradient(90deg, #4e54c8, #8f94fb);
       padding: 14px 30px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
     }
 
     .logo {
@@ -34,59 +40,165 @@
     ul {
       list-style: none;
       display: flex;
-      gap: 25px;
+      align-items: center;
+      gap: 18px;
     }
 
     ul li a {
       text-decoration: none;
       color: #ffffff;
-      font-size: 16px;
-      padding: 6px 12px;
-      border-radius: 4px;
-      transition: background 0.3s ease;
+      font-size: 15px;
+      padding: 8px 14px;
+      border-radius: 6px;
     }
 
     ul li a:hover {
       background: rgba(255, 255, 255, 0.2);
     }
-    .student{
-        display: flex;
-        justify-content: center;
-        font-size: 4rem;
-        align-content: center;
+
+    .logout-btn {
+      padding: 8px 16px;
+      background-color: #ffffff;
+      color: #4e54c8;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .logout-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background-image: 
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 80px;
+    }
+
+    .hero-content {
+      color: #ffffff;
+      max-width: 700px;
+      padding: 20px;
+    }
+
+    .hero-content h1 {
+      font-size: 3.2rem;
+      margin-bottom: 15px;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      color: #f1f1f1;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      padding: 12px 26px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .primary-btn {
+      background-color: #4e54c8;
+      color: #ffffff;
+    }
+
+    .primary-btn:hover {
+      background-color: #3d42a3;
+    }
+
+    .secondary-btn {
+      background-color: #ffffff;
+      color: #4e54c8;
+    }
+
+    .secondary-btn:hover {
+      background-color: #f1f1f1;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero-content p {
+        font-size: 1.05rem;
+      }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- Navbar -->
   <nav>
     <div class="logo">Student Cheque</div>
+
     <ul>
       <li><a href="/">Home</a></li>
+
       <% if (islogedIn) { %>
         <li><a href="/Viewstudent">View Students</a></li>
         <li><a href="/Addstudent">Add Student</a></li>
-      <li><a href="/Hostview">HostView</a></li>
+        <li><a href="/Hostview">HostView</a></li>
       <% } %>
+
       <% if (!islogedIn) { %>
         <li><a href="/Login">Login</a></li>
         <li><a href="/Signup">Signup</a></li>
       <% } else { %>
-        <form action="/logout" method="POST">
-  <button type="submit" style="
-    padding: 10px 20px;
-    background-color: #3cc5e7;
-    color: rgb(85, 85, 85);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  ">
-    Logout
-  </button>
-</form>
-      <% }%>
+        <li>
+          <form action="/logout" method="POST">
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        </li>
+      <% } %>
     </ul>
   </nav>
-  <h1 class="student"> Welcome Students </h1>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Student Cheque</h1>
+      <p>
+        Manage student details easily.  
+        Add, view, edit, and organize student records in one secure place.
+      </p>
+
+      <div class="hero-buttons">
+        <% if (islogedIn) { %>
+          <a href="/Viewstudent" class="hero-btn primary-btn">View Students</a>
+          <a href="/Addstudent" class="hero-btn secondary-btn">Add Student</a>
+        <% } else { %>
+          <a href="/Login" class="hero-btn primary-btn">Get Started</a>
+          <a href="/Signup" class="hero-btn secondary-btn">Create Account</a>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
